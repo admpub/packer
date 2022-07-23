@@ -2,14 +2,15 @@ package packer
 
 import (
 	"os"
-	"sync"
+
+	oncex "github.com/admpub/once"
 )
 
 var (
 	empty      Manager
 	defaultMgr Manager
 	defaultErr error
-	once       sync.Once
+	once       oncex.Once
 )
 
 var (
@@ -24,4 +25,8 @@ func Default() (mgr Manager, err error) {
 	mgr = defaultMgr
 	err = defaultErr
 	return
+}
+
+func Reset() {
+	once.Reset()
 }

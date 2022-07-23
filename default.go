@@ -5,10 +5,13 @@ import (
 	"sync"
 )
 
-var empty Manager
-var defaultMgr Manager
-var defaultErr error
-var once sync.Once
+var (
+	empty      Manager
+	defaultMgr Manager
+	defaultErr error
+	once       sync.Once
+)
+
 var (
 	Stdout = os.Stdout
 	Stderr = os.Stderr

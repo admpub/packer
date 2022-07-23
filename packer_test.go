@@ -36,8 +36,8 @@ func TestCheck(t *testing.T) {
 }
 
 func TestInstall(t *testing.T) {
-	// err := Install(`iptables`)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	err := Install(`iptables`)
+	if err != nil {
+		panic(err)
+	}
 }

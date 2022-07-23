@@ -1,11 +1,7 @@
 package packer
 
 import (
-	"bytes"
 	"fmt"
-	"io"
-	"log"
-	"os"
 	"os/exec"
 	"strings"
 
@@ -36,7 +32,7 @@ func DetectManager() (Manager, error) {
 	switch opsystem := osinfo.GetVersion().Runtime; opsystem {
 	default:
 		// windows, freebsd, plan9 ...
-		return Manager{}, fmt.Errorf("%s is not supported", opsystem)
+		return empty, fmt.Errorf("%s is %w", opsystem, ErrUnsuppored)
 	case "darwin":
 		return brew, nil
 	case "linux":
@@ -44,9 +40,11 @@ func DetectManager() (Manager, error) {
 		case "arch":
 			if Check("pacman") {
 				return pacman, nil
-			} else if Check("yay") {
+			}
+			if Check("yay") {
 				return yay, nil
-			} else if Check("paru") {
+			}
+			if Check("paru") {
 				return paru, nil
 			}
 		case "alpine":
@@ -64,77 +62,66 @@ func DetectManager() (Manager, error) {
 		case "debian":
 			if Check("apt") {
 				return apt, nil
-			} else if Check("snap") {
+			}
+			if Check("snap") {
 				return snap, nil
 			}
 		default:
 			if Check("snap") {
 				return snap, nil
-			} else if Check("flatpak") {
-				return flatpak, nil
-			} else {
-				return Manager{}, fmt.Errorf("no package manager found")
 			}
-
+			if Check("flatpak") {
+				return flatpak, nil
+			}
+			return empty, ErrNotFound
 		}
-		return Manager{}, fmt.Errorf("no package manager found")
+		return empty, ErrNotFound
 	}
 }
 
 func Check(packageName string) bool {
 	_, err := exec.LookPath(packageName)
-	if err != nil {
-		return false
-	} else {
-		return true
-	}
+	return err == nil
 }
 
 func Install(packageName string) error {
-	mngr, err := DetectManager()
+	mngr, err := Default()
 	if err != nil {
 		return err
 	}
 
-	c := "sudo " + mngr.Name + " " + mngr.InstallArg + " " + packageName
+	c := mngr.Name + " " + mngr.InstallArg + " " + packageName
 	err = Command(c)
-	return nil
+	return err
 }
 
 func Remove(packageName string) error {
-	mngr, err := DetectManager()
+	mngr, err := Default()
 	if err != nil {
 		return err
 	}
 
-	c := "sudo " + mngr.Name + " " + mngr.RemoveArg + " " + packageName
+	c := mngr.Name + " " + mngr.RemoveArg + " " + packageName
 	err = Command(c)
-	return nil
+	return err
 }
 
 func Update() error {
-	mngr, err := DetectManager()
+	mngr, err := Default()
 	if err != nil {
 		return err
 	}
 
-	c := "sudo " + mngr.Name + " " + mngr.UpdateArg
+	c := mngr.Name + " " + mngr.UpdateArg
 	err = Command(c)
-	return nil
+	return err
 }
 
 func Command(command string) error {
 	args := strings.Fields(command)
-	var cmd *exec.Cmd
-	cmd = exec.Command(args[0], args[1:]...)
-
-	var stdoutBuf, stderrBuf bytes.Buffer
-	cmd.Stdout = io.MultiWriter(os.Stdout, &stdoutBuf)
-	cmd.Stderr = io.MultiWriter(os.Stderr, &stderrBuf)
-
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Stdout = Stdout
+	cmd.Stderr = Stderr
 	err := cmd.Run()
-	if err != nil {
-		log.Printf("Command failed with %s\n", err)
-	}
-	return nil
+	return err
 }

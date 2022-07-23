@@ -1,7 +1,7 @@
-module github.com/makifdb/packer
+module github.com/admpub/packer
 
 go 1.18
 
 require github.com/JustinTimperio/osinfo v0.0.0-20210705143940-9e63396e3c2f
 
-require golang.org/x/sys v0.0.0-20210305230114-8fe3ee5dd75b // indirect
+require golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect

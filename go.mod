@@ -7,4 +7,4 @@ require (
 	github.com/admpub/once v0.0.1
 )
 
-require golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+require golang.org/x/sys v0.8.0 // indirect

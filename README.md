@@ -31,7 +31,7 @@ Packer is a simple system package management tool for Go. Packer, helps you dete
 
 ## Download
 
-You can simply run `go get github.com/makifdb/packer` to start using in your own code.
+You can simply run `go get github.com/admpub/packer` to start using in your own code.
 
 ## Examples
 

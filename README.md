@@ -1,8 +1,8 @@
 # packer
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/makifdb/packer)](https://goreportcard.com/report/github.com/makifdb/packer)
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/makifdb/packer.svg)](https://github.com/makifdb/packer)
-[![License: Apache-2.0](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/makifdb/packer/blob/main/LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/admpub/packer)](https://goreportcard.com/report/github.com/admpub/packer)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/admpub/packer.svg)](https://github.com/admpub/packer)
+[![License: Apache-2.0](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/admpub/packer/blob/main/LICENSE)
 
 Packer is a simple system package management tool for Go. Packer, helps you detect the system package manager and automate install your package or dependencies inside Go.
 
